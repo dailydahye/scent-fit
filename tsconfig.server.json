@@ -1,9 +1,8 @@
-// 파일명: tsconfig.server.json
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "lib": ["ES2022"],
     "skipLibCheck": true,
     "strict": true,
@@ -14,7 +13,8 @@
     "isolatedModules": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "types": ["node", "@vercel/node"]
+    "types": ["node", "@vercel/node"],
+    "allowJs": false
   },
-  "include": ["api"]
+  "include": ["api", "src/data/**/*.ts", "src/types/**/*.ts"]
 }

@@ -1,4 +1,4 @@
-import type { QuizAnswers } from '@/types';
+import type { QuizAnswers } from '../types/index.js';
 
 export interface ChoiceOption<V extends string> {
   value: V;
