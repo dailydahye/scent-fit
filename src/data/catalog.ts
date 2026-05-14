@@ -1,4 +1,4 @@
-import type { Product } from '@/types';
+import type { Product } from '../types/index';
 
 // 카테고리별 ambient 이미지 (Unsplash, 상업 사용 가능)
 // Body Wash → 물 / 비누 / 욕실

@@ -1,11 +1,33 @@
-import { CATEGORIES, pickProduct, type CategoryName } from './catalog';
-import type { QuizAnswers, RecommendResult } from '@/types';
+import { CATEGORIES, type CategoryName } from './catalog';
+import type { QuizAnswers, RecommendResult, Product } from '../types/index';
 
 function pickCategory(a: QuizAnswers): CategoryName {
-  if (a.preference === 'clean') return 'Clean & Crisp';
-  if (a.preference === 'warm') return 'Warm Cotton';
-  if (a.preference === 'green') return 'Green Garden';
-  return 'Soft Powder';
+  // 명시적 선호 매핑
+  switch (a.preference) {
+    case 'clean':
+    case 'fresh':
+      return 'Clean & Crisp';
+    case 'warm':
+    case 'cozy':
+      return 'Warm Cotton';
+    case 'green':
+      return 'Green Garden';
+    case 'powdery':
+      return 'Soft Powder';
+    case 'unsure':
+    default:
+      // unsure는 공간으로 보조 판단
+      if (a.space === 'outdoor') return 'Green Garden';
+      if (a.space === 'home') return 'Soft Powder';
+      if (a.space === 'cafe') return 'Warm Cotton';
+      return 'Clean & Crisp';
+  }
+}
+
+// 제네릭 union type 추론 우회 — Product[]로 단언
+function pick(arr: readonly Product[], seed: number): Product {
+  const idx = Math.abs(seed) % arr.length;
+  return { ...arr[idx] };
 }
 
 export function fallbackRecommend(a: QuizAnswers): RecommendResult {
@@ -18,9 +40,9 @@ export function fallbackRecommend(a: QuizAnswers): RecommendResult {
     description: cat.defaultDescription,
     routine: [...cat.defaultRoutine],
     noteAxes: cat.defaultNoteAxes.map((n) => ({ ...n })),
-    bodywash: { ...pickProduct(cat.bodywash, seed) },
-    shampoo: { ...pickProduct(cat.shampoo, seed + 1) },
-    nextPerfume: { ...pickProduct(cat.nextPerfume, seed + 2) },
+    bodywash: pick(cat.bodywash as readonly Product[], seed),
+    shampoo: pick(cat.shampoo as readonly Product[], seed + 1),
+    nextPerfume: pick(cat.nextPerfume as readonly Product[], seed + 2),
     source: 'fallback',
   };
 }

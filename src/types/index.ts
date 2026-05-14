@@ -1,6 +1,6 @@
 export type ShowerTime = 'morning' | 'evening' | 'both';
-export type Preference = 'clean' | 'warm' | 'green' | 'powdery';
-export type Space = 'office' | 'home' | 'outdoor' | 'mixed';
+export type Preference = 'clean' | 'warm' | 'green' | 'powdery' | 'cozy' | 'fresh' | 'unsure';
+export type Space = 'office' | 'home' | 'outdoor' | 'mixed' | 'cafe';
 
 export interface QuizAnswers {
   showerTime: ShowerTime;

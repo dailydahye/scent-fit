@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { CATEGORIES, pickProduct, type CategoryName } from '../src/data/catalog';
+import { CATEGORIES, type CategoryName } from '../src/data/catalog';
 import { fallbackRecommend } from '../src/data/recommend-fallback';
-import type { QuizAnswers, RecommendResult } from '../src/types';
+import type { QuizAnswers, RecommendResult, Product } from '../src/types/index';
 
 const TIMEOUT_MS = 8000;
 const VALID_CATEGORIES: CategoryName[] = [
@@ -10,6 +10,11 @@ const VALID_CATEGORIES: CategoryName[] = [
   'Green Garden',
   'Soft Powder',
 ];
+
+function pick(arr: readonly Product[], seed: number): Product {
+  const idx = Math.abs(seed) % arr.length;
+  return { ...arr[idx] };
+}
 
 function sanitizeAxes(raw: unknown): { label: string; value: number }[] {
   if (!Array.isArray(raw)) return [];
@@ -76,7 +81,7 @@ async function callOpenAI(answers: QuizAnswers): Promise<RecommendResult | null>
 
     clearTimeout(timer);
     if (!resp.ok) return null;
-    const data = await resp.json();
+    const data: any = await resp.json();
     const content = data?.choices?.[0]?.message?.content;
     if (typeof content !== 'string') return null;
 
@@ -98,9 +103,9 @@ async function callOpenAI(answers: QuizAnswers): Promise<RecommendResult | null>
         const ax = sanitizeAxes(parsed.noteAxes);
         return ax.length === 5 ? ax : meta.defaultNoteAxes.map((n) => ({ ...n }));
       })(),
-      bodywash: { ...pickProduct(meta.bodywash, seed) },
-      shampoo: { ...pickProduct(meta.shampoo, seed + 1) },
-      nextPerfume: { ...pickProduct(meta.nextPerfume, seed + 2) },
+      bodywash: pick(meta.bodywash as readonly Product[], seed),
+      shampoo: pick(meta.shampoo as readonly Product[], seed + 1),
+      nextPerfume: pick(meta.nextPerfume as readonly Product[], seed + 2),
       source: 'ai',
     };
   } catch {
