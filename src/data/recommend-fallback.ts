@@ -1,4 +1,4 @@
-import { CATEGORIES, type CategoryName } from './catalog';
+import { CATEGORIES } from './catalog.js';
 import type { QuizAnswers, RecommendResult, Product } from '../types/index.js';
 function pickCategory(a: QuizAnswers): CategoryName {
   // 명시적 선호 매핑
