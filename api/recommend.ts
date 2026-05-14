@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { CATEGORIES, type CategoryName } from '../src/data/catalog';
-import { fallbackRecommend } from '../src/data/recommend-fallback';
-import type { QuizAnswers, RecommendResult, Product } from '../src/types/index';
+import { CATEGORIES, type CategoryName } from '../src/data/catalog.js';
+import { fallbackRecommend } from '../src/data/recommend-fallback.js';
+import type { QuizAnswers, RecommendResult, Product } from '../src/types/index.js';
 
 const TIMEOUT_MS = 8000;
 const VALID_CATEGORIES: CategoryName[] = [
