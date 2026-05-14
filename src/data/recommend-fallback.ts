@@ -1,6 +1,5 @@
 import { CATEGORIES, type CategoryName } from './catalog';
-import type { QuizAnswers, RecommendResult, Product } from '../types/index';
-
+import type { QuizAnswers, RecommendResult, Product } from '../types/index.js';
 function pickCategory(a: QuizAnswers): CategoryName {
   // 명시적 선호 매핑
   switch (a.preference) {
